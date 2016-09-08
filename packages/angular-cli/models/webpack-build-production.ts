@@ -1,6 +1,5 @@
 import * as path from 'path';
 const WebpackMd5Hash = require('webpack-md5-hash');
-const CompressionPlugin = require('compression-webpack-plugin');
 import * as webpack from 'webpack';
 
 declare module 'webpack' {
@@ -31,13 +30,6 @@ export const getWebpackProdConfigPartial = function(projectRoot: string, appConf
         mangle: { screw_ie8 : true },
         compress: { screw_ie8: true },
         sourceMap: true
-      }),
-      new CompressionPlugin({
-          asset: '[path].gz[query]',
-          algorithm: 'gzip',
-          test: /\.js$|\.html$/,
-          threshold: 10240,
-          minRatio: 0.8
       }),
       new webpack.LoaderOptionsPlugin({
         options: {
