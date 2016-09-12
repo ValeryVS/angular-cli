@@ -45,7 +45,7 @@ export function getWebpackCommonConfig(
     entry: entry,
     output: {
       path: path.resolve(projectRoot, appConfig.outDir),
-      filename: '[name].bundle.js'
+      filename: `${appConfig.assets}/[name].bundle.js`
     },
     module: {
       preLoaders: [
@@ -116,12 +116,24 @@ export function getWebpackCommonConfig(
         { include: scripts, test: /\.js$/, loader: 'script-loader' },
 
         { test: /\.json$/, loader: 'json-loader' },
-        { test: /\.(jpg|png)$/, loader: 'url-loader?limit=10000' },
+        {
+          test: /\.(jpg|png)$/,
+          loader: `url-loader?limit=10000&name=${appConfig.assets}/[hash].[ext]`
+        },
         { test: /\.html$/, loader: 'raw-loader' },
 
-        { test: /\.(woff|ttf|svg)$/, loader: 'url?limit=10000' },
-        { test: /\.woff2$/, loader: 'url?limit=10000&mimetype=font/woff2' },
-        { test: /\.eot$/, loader: 'file' }
+        {
+          test: /\.(woff|ttf|svg)$/,
+          loader: `url?limit=10000&name=${appConfig.assets}/[hash].[ext]`
+        },
+        {
+          test: /\.woff2$/,
+          loader: `url?limit=10000&mimetype=font/woff2&name=${appConfig.assets}/[hash].[ext]`
+        },
+        {
+          test: /\.eot$/,
+          loader: `file?name=${appConfig.assets}/[hash].[ext]`
+        }
       ]
     },
     plugins: [
@@ -149,8 +161,8 @@ export function getWebpackCommonConfig(
       new webpack.optimize.CommonsChunkPlugin({
         minChunks: Infinity,
         name: 'inline',
-        filename: 'inline.js',
-        sourceMapFilename: 'inline.map'
+        filename: `${appConfig.assets}/inline.js`,
+        sourceMapFilename: `${appConfig.assets}/inline.map`
       }),
       new CopyWebpackPlugin([{
         context: path.resolve(appRoot, appConfig.assets),
