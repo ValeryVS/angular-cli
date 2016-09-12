@@ -2,6 +2,7 @@ import * as path from 'path';
 const WebpackMd5Hash = require('webpack-md5-hash');
 import * as webpack from 'webpack';
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const extractTextPluginPublicPath = '../';
 
 declare module 'webpack' {
   export interface LoaderOptionsPlugin {}
@@ -18,13 +19,16 @@ export const getWebpackProdConfigPartial = function(projectRoot: string, appConf
   const styles = appConfig.styles
                ? appConfig.styles.map((style: string) => path.resolve(appRoot, style))
                : [];
-  const cssLoaders = ['css-loader?sourcemap&minimize', 'postcss-loader'];
+  const cssLoaders = [
+    'css-loader?sourcemap&minimize&name=' + appConfig.assetsOutDir + '/[hash].[ext]',
+    'postcss-loader'
+  ];
   return {
     output: {
       path: path.resolve(projectRoot, appConfig.outDir),
-      filename: '[name].[chunkhash].bundle.js',
-      sourceMapFilename: '[name].[chunkhash].bundle.map',
-      chunkFilename: '[id].[chunkhash].chunk.js'
+      filename: `${appConfig.assetsOutDir}/[name].[chunkhash].bundle.js`,
+      sourceMapFilename: `${appConfig.assetsOutDir}/[name].[chunkhash].bundle.map`,
+      chunkFilename: `${appConfig.assetsOutDir}/[id].[chunkhash].chunk.js`
     },
     module: {
       rules: [
@@ -32,24 +36,45 @@ export const getWebpackProdConfigPartial = function(projectRoot: string, appConf
         {
           include: styles,
           test: /\.css$/,
-          loaders: ExtractTextPlugin.extract(cssLoaders)
+          loaders: ExtractTextPlugin.extract({
+            loader: cssLoaders,
+            publicPath: extractTextPluginPublicPath
+          })
         }, {
           include: styles,
           test: /\.styl$/,
-          loaders: ExtractTextPlugin.extract([...cssLoaders, 'stylus-loader?sourcemap'])
+          loaders: ExtractTextPlugin.extract({
+            loader: [
+              ...cssLoaders,
+              `stylus-loader?sourcemap&name=${appConfig.assetsOutDir}/[hash].[ext]`
+            ],
+            publicPath: extractTextPluginPublicPath
+          })
         }, {
           include: styles,
           test: /\.less$/,
-          loaders: ExtractTextPlugin.extract([...cssLoaders, 'less-loader?sourcemap'])
+          loaders: ExtractTextPlugin.extract({
+            loader: [
+              ...cssLoaders,
+              `less-loader?sourcemap&name=${appConfig.assetsOutDir}/[hash].[ext]`
+            ],
+            publicPath: extractTextPluginPublicPath
+          })
         }, {
           include: styles,
           test: /\.scss$|\.sass$/,
-          loaders: ExtractTextPlugin.extract([...cssLoaders, 'sass-loader?sourcemap'])
+          loaders: ExtractTextPlugin.extract({
+            loader: [
+              ...cssLoaders,
+              `sass-loader?sourcemap&name=${appConfig.assetsOutDir}/[hash].[ext]`
+            ],
+            publicPath: extractTextPluginPublicPath
+          })
         },
       ]
     },
     plugins: [
-      new ExtractTextPlugin('[name].[contenthash].bundle.css'),
+      new ExtractTextPlugin(`${appConfig.assetsOutDir}/[name].[contenthash].bundle.css`),
       new WebpackMd5Hash(),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('production')

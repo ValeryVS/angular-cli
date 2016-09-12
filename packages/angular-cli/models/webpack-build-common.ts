@@ -42,9 +42,9 @@ export function getWebpackCommonConfig(
     entry: entry,
     output: {
       path: path.resolve(projectRoot, appConfig.outDir),
-      filename: '[name].bundle.js',
-      sourceMapFilename: '[name].bundle.map',
-      chunkFilename: '[id].chunk.js'
+      filename: `${appConfig.assetsOutDir}/[name].bundle.js`,
+      sourceMapFilename: `${appConfig.assetsOutDir}/[name].bundle.map`,
+      chunkFilename: `${appConfig.assetsOutDir}/[id].chunk.js`
     },
     module: {
       rules: [
@@ -77,14 +77,17 @@ export function getWebpackCommonConfig(
 
 
         // load global scripts using script-loader
-        { include: scripts, test: /\.js$/, loader: 'script-loader' },
+        { include: scripts, test: /\.js$/,
+          loader: `script-loader?name=${appConfig.assetsOutDir}/[hash].[ext]` },
 
-        { test: /\.json$/, loader: 'json-loader' },
-        { test: /\.(jpg|png|gif)$/, loader: 'url-loader?limit=10000' },
-        { test: /\.html$/, loader: 'raw-loader' },
+        { test: /\.json$/, loader: `json-loader?name=${appConfig.assetsOutDir}/[hash].[ext]` },
+        { test: /\.(jpg|png|gif)$/,
+          loader: `url-loader?limit=10000&name=${appConfig.assetsOutDir}/[hash].[ext]` },
+        { test: /\.html$/, loader: `raw-loader?name=${appConfig.assetsOutDir}/[hash].[ext]` },
 
-        { test: /\.(otf|ttf|woff|woff2)$/, loader: 'url-loader?limit=10000' },
-        { test: /\.(eot|svg)$/, loader: 'file-loader' }
+        { test: /\.(otf|ttf|woff|woff2)$/,
+          loader: `url-loader?limit=10000&name=${appConfig.assetsOutDir}/[hash].[ext]` },
+        { test: /\.(eot|svg)$/, loader: `file-loader?name=${appConfig.assetsOutDir}/[hash].[ext]` }
       ]
     },
     plugins: [
