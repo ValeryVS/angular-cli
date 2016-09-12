@@ -10,9 +10,9 @@ export const getWebpackDevConfigPartial = function(projectRoot: string, appConfi
     devtool: 'source-map',
     output: {
       path: path.resolve(projectRoot, appConfig.outDir),
-      filename: '[name].bundle.js',
-      sourceMapFilename: '[name].map',
-      chunkFilename: '[id].chunk.js'
+      filename: `${appConfig.assetsOutDir}/[name].bundle.js`,
+      sourceMapFilename: `${appConfig.assetsOutDir}/[name].map`,
+      chunkFilename: `${appConfig.assetsOutDir}/[id].chunk.js`
     },
     module: {
       rules: [
@@ -24,15 +24,24 @@ export const getWebpackDevConfigPartial = function(projectRoot: string, appConfi
         }, {
           include: styles,
           test: /\.styl$/,
-          loaders: [...cssLoaders, 'stylus-loader?sourcemap']
+          loaders: [
+            ...cssLoaders,
+            `stylus-loader?sourcemap&name=${appConfig.assetsOutDir}/[hash].[ext]`
+          ]
         }, {
           include: styles,
           test: /\.less$/,
-          loaders: [...cssLoaders, 'less-loader?sourcemap']
+          loaders: [
+            ...cssLoaders,
+            `less-loader?sourcemap&name=${appConfig.assetsOutDir}/[hash].[ext]`
+          ]
         }, {
           include: styles,
           test: /\.scss$|\.sass$/,
-          loaders: [...cssLoaders, 'sass-loader?sourcemap']
+          loaders: [
+            ...cssLoaders,
+            `sass-loader?sourcemap&name=${appConfig.assetsOutDir}/[hash].[ext]`
+          ]
         },
       ]
     }

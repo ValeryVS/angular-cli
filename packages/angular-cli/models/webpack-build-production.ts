@@ -23,9 +23,9 @@ export const getWebpackProdConfigPartial = function(projectRoot: string, appConf
     devtool: 'source-map',
     output: {
       path: path.resolve(projectRoot, appConfig.outDir),
-      filename: '[name].[chunkhash].bundle.js',
-      sourceMapFilename: '[name].[chunkhash].bundle.map',
-      chunkFilename: '[id].[chunkhash].chunk.js'
+      filename: `${appConfig.assetsOutDir}/[name].[chunkhash].bundle.js`,
+      sourceMapFilename: `${appConfig.assetsOutDir}/[name].[chunkhash].bundle.map`,
+      chunkFilename: `${appConfig.assetsOutDir}/[id].[chunkhash].chunk.js`
     },
     module: {
       rules: [
@@ -50,7 +50,7 @@ export const getWebpackProdConfigPartial = function(projectRoot: string, appConf
       ]
     },
     plugins: [
-      new ExtractTextPlugin('[name].[contenthash].bundle.css'),
+      new ExtractTextPlugin(`${appConfig.assetsOutDir}/[name].[contenthash].bundle.css`),
       new WebpackMd5Hash(),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('production')
