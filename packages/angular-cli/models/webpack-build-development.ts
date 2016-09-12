@@ -5,9 +5,9 @@ export const getWebpackDevConfigPartial = function(projectRoot: string, appConfi
     devtool: 'cheap-module-source-map',
     output: {
       path: path.resolve(projectRoot, appConfig.outDir),
-      filename: '[name].bundle.js',
-      sourceMapFilename: '[name].map',
-      chunkFilename: '[id].chunk.js'
+      filename: `${appConfig.assetsOutDir}/[name].bundle.js`,
+      sourceMapFilename: `${appConfig.assetsOutDir}/[name].map`,
+      chunkFilename: `${appConfig.assetsOutDir}/[id].chunk.js`
     },
     node: {
       fs: 'empty',
