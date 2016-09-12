@@ -34,6 +34,10 @@
           "assets": {
             "type": "string"
           },
+          "assetsOutDir": {
+            "type": "string",
+            "default": ""
+          },
           "index": {
             "type": "string",
             "default": "index.html"

@@ -39,7 +39,7 @@ export function getWebpackCommonConfig(
     entry: entry,
     output: {
       path: path.resolve(projectRoot, appConfig.outDir),
-      filename: '[name].bundle.js'
+      filename: `${appConfig.assetsOutDir}/[name].bundle.js`
     },
     module: {
       rules: [
@@ -93,12 +93,24 @@ export function getWebpackCommonConfig(
         { include: scripts, test: /\.js$/, loader: 'script-loader' },
 
         { test: /\.json$/, loader: 'json-loader' },
-        { test: /\.(jpg|png|gif)$/, loader: 'url-loader?limit=10000' },
+        {
+          test: /\.(jpg|png|gif)$/,
+          loader: `url-loader?limit=10000&name=${appConfig.assetsOutDir}/[hash].[ext]`
+        },
         { test: /\.html$/, loader: 'raw-loader' },
 
-        { test: /\.(otf|woff|ttf|svg)$/, loader: 'url?limit=10000' },
-        { test: /\.woff2$/, loader: 'url?limit=10000&mimetype=font/woff2' },
-        { test: /\.eot$/, loader: 'file' }
+        {
+          test: /\.(otf|woff|ttf|svg)$/,
+          loader: `url?limit=10000&name=${appConfig.assetsOutDir}/[hash].[ext]`
+        },
+        {
+          test: /\.woff2$/,
+          loader: `url?limit=10000&mimetype=font/woff2&name=${appConfig.assetsOutDir}/[hash].[ext]`
+        },
+        {
+          test: /\.eot$/,
+          loader: `file?name=${appConfig.assetsOutDir}/[hash].[ext]`
+        }
       ]
     },
     plugins: [
@@ -124,8 +136,8 @@ export function getWebpackCommonConfig(
       new webpack.optimize.CommonsChunkPlugin({
         minChunks: Infinity,
         name: 'inline',
-        filename: 'inline.js',
-        sourceMapFilename: 'inline.map'
+        filename: `${appConfig.assetsOutDir}/inline.js`,
+        sourceMapFilename: `${appConfig.assetsOutDir}/inline.map`
       }),
       new CopyWebpackPlugin([{
         context: path.resolve(appRoot, appConfig.assets),

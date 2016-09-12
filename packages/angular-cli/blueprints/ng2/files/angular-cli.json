@@ -8,6 +8,7 @@
       "root": "<%= sourceDir %>",
       "outDir": "dist",
       "assets": "assets",
+      "assetsOutDir": "",
       "index": "index.html",
       "main": "main.ts",
       "test": "test.ts",
