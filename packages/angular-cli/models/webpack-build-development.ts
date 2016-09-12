@@ -5,9 +5,9 @@ export const getWebpackDevConfigPartial = function(projectRoot: string, appConfi
     devtool: 'source-map',
     output: {
       path: path.resolve(projectRoot, appConfig.outDir),
-      filename: '[name].bundle.js',
-      sourceMapFilename: '[name].map',
-      chunkFilename: '[id].chunk.js'
+      filename: `${appConfig.assets}/[name].bundle.js`,
+      sourceMapFilename: `${appConfig.assets}/[name].map`,
+      chunkFilename: `${appConfig.assets}/[id].chunk.js`
     },
     tslint: {
       emitErrors: false,

@@ -8,9 +8,9 @@ export const getWebpackProdConfigPartial = function(projectRoot: string, appConf
     devtool: 'source-map',
     output: {
       path: path.resolve(projectRoot, appConfig.outDir),
-      filename: '[name].[chunkhash].bundle.js',
-      sourceMapFilename: '[name].[chunkhash].bundle.map',
-      chunkFilename: '[id].[chunkhash].chunk.js'
+      filename: `${appConfig.assets}/[name].[chunkhash].bundle.js`,
+      sourceMapFilename: `${appConfig.assets}/[name].[chunkhash].bundle.map`,
+      chunkFilename: `${appConfig.assets}/[id].[chunkhash].chunk.js`
     },
     plugins: [
       new WebpackMd5Hash(),
