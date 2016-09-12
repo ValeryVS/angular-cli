@@ -13,6 +13,7 @@ export interface CliConfig {
         root?: string;
         outDir?: string;
         assets?: string;
+        assetsOutDir?: string;
         index?: string;
         main?: string;
         test?: string;
