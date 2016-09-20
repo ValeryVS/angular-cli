@@ -16,6 +16,10 @@ export function getWebpackCommonConfig(
 ) {
 
   const appRoot = path.resolve(projectRoot, appConfig.root);
+  const modules = appConfig.modules
+                  ? appConfig.modules.map((value: string) => path.resolve(projectRoot, value) )
+                  : [];
+  modules.push('node_modules');
   const appMain = path.resolve(appRoot, appConfig.main);
   const styles = appConfig.styles
                ? appConfig.styles.map((style: string) => path.resolve(appRoot, style))
@@ -37,7 +41,8 @@ export function getWebpackCommonConfig(
     devtool: 'source-map',
     resolve: {
       extensions: ['', '.ts', '.js'],
-      root: appRoot
+      root: appRoot,
+      modules: modules
     },
     context: path.resolve(__dirname, './'),
     entry: entry,

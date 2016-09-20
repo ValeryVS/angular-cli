@@ -6,13 +6,18 @@ const webpack = require('webpack');
 const getWebpackTestConfig = function (projectRoot, environment, appConfig) {
 
   const appRoot = path.resolve(projectRoot, appConfig.root);
+  const modules = appConfig.modules
+                  ? appConfig.modules.map((value) => path.resolve(projectRoot, value) )
+                  : [];
+  modules.push('node_modules');
 
   return {
     devtool: 'inline-source-map',
     context: path.resolve(__dirname, './'),
     resolve: {
       extensions: ['', '.ts', '.js'],
-      root: appRoot
+      root: appRoot,
+      modules: modules
     },
     entry: {
       test: path.resolve(appRoot, appConfig.test)

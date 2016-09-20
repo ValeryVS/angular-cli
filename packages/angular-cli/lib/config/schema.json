@@ -53,6 +53,14 @@
           "mobile": {
             "type": "boolean"
           },
+          "modules": {
+            "description": "Paths to resolve modules",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "additionalProperties": false
+          },
           "styles": {
             "description": "Global styles to be included in the build.",
             "type": "array",

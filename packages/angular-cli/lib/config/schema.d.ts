@@ -20,6 +20,10 @@ export interface CliConfig {
         prefix?: string;
         mobile?: boolean;
         /**
+         * Paths to resolve modules.
+         */
+        modules?: string[];
+        /**
          * Global styles to be included in the build.
          */
         styles?: string[];
