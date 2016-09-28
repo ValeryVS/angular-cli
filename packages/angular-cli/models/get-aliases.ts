@@ -7,12 +7,10 @@ export function getAliases(
   const aliases: any = {};
 
   const appRoot = path.resolve(projectRoot, appConfig.root);
-  const tsConfig = require(path.resolve(appRoot, appConfig.tsconfig));
 
-  if (tsConfig && tsConfig.compilerOptions && tsConfig.compilerOptions.paths) {
-    const paths = tsConfig.compilerOptions.paths;
-    for (let aliasKey in paths) {
-      let alias = path.resolve(appRoot, paths[aliasKey][0]);
+  if (appConfig.alias) {
+    for (let aliasKey in appConfig.alias) {
+      let alias = path.resolve(appRoot, appConfig.alias[aliasKey]);
       aliases[aliasKey] = alias;
     }
   }
