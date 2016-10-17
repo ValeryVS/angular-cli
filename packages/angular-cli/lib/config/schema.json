@@ -43,6 +43,11 @@
             "type": "string",
             "default": "."
           },
+          "alias": {
+            "description": "Aliases for resolve imports in webpack",
+            "type": "object",
+            "additionalProperties": true
+          },
           "index": {
             "type": "string",
             "default": "index.html"
