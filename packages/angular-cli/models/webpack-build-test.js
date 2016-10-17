@@ -1,5 +1,7 @@
 // this config must be JS so that the karma plugin can load it
 
+const getAliases = require('./get-aliases').getAliases;
+
 const path = require('path');
 const webpack = require('webpack');
 const atl = require('awesome-typescript-loader');
@@ -7,6 +9,7 @@ const atl = require('awesome-typescript-loader');
 const getWebpackTestConfig = function (projectRoot, environment, appConfig) {
 
   const appRoot = path.resolve(projectRoot, appConfig.root);
+  const aliases = getAliases(projectRoot, appConfig);
 
   return {
     devtool: 'inline-source-map',
@@ -17,7 +20,8 @@ const getWebpackTestConfig = function (projectRoot, environment, appConfig) {
         new atl.TsConfigPathsPlugin({
           tsconfig: path.resolve(appRoot, appConfig.tsconfig)
         })
-      ]
+      ],
+      alias: aliases
     },
     entry: {
       test: path.resolve(appRoot, appConfig.test)
