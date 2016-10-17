@@ -13,6 +13,13 @@ export interface CliConfig {
         root?: string;
         outDir?: string;
         assets?: string;
+        assetsOutDir?: string;
+        /**
+         * Aliases for resolve imports in webpack
+         */
+        alias?: {
+            [name: string]: any;
+        };
         index?: string;
         main?: string;
         test?: string;

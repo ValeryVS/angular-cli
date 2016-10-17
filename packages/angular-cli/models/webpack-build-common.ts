@@ -3,6 +3,8 @@ import * as path from 'path';
 import {GlobCopyWebpackPlugin} from '../plugins/glob-copy-webpack-plugin';
 import {BaseHrefWebpackPlugin} from '@angular-cli/base-href-webpack';
 
+import { getAliases } from './get-aliases';
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
@@ -22,6 +24,7 @@ export function getWebpackCommonConfig(
   const scripts = appConfig.scripts
                 ? appConfig.scripts.map((script: string) => path.resolve(appRoot, script))
                 : [];
+  const aliases = getAliases(projectRoot, appConfig);
 
   let entry: { [key: string]: string[] } = {
     main: [appMain]
@@ -35,7 +38,8 @@ export function getWebpackCommonConfig(
     devtool: 'source-map',
     resolve: {
       extensions: ['.ts', '.js'],
-      modules: [path.resolve(projectRoot, 'node_modules')]
+      modules: [path.resolve(projectRoot, 'node_modules')],
+      alias: aliases
     },
     context: path.resolve(__dirname, './'),
     entry: entry,

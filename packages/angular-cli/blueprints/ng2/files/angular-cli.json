@@ -11,7 +11,8 @@
         "assets",
         "favicon.ico"
       ],
-      "assetsOutDir": "",
+      "assetsOutDir": ".",
+      "alias": {},
       "index": "index.html",
       "main": "main.ts",
       "test": "test.ts",
